@@ -27,7 +27,7 @@
   - Install pre-commit hooks: `poetry run pre-commit install`
   - Run pre-commit locally: `poetry run pre-commit run --all-files` (this runs `black` and `ruff` via hooks)
   - Run tests: `poetry run pytest -q --cov=src --cov-report=xml`
-- CI workflow: `.github/workflows/python-ci.yml` runs pre-commit checks, tests with coverage, dependency review, and uploads coverage to Codecov.
+- CI workflow: `.github/workflows/python-ci.yml` runs pre-commit checks, tests with coverage, dependency review, and uploads coverage to Codecov (requires adding a Codecov token secret if desired for private repos).
 
 ## Project-specific conventions ⚙️
 - Package code lives under `src/` and tests under `tests/`.
