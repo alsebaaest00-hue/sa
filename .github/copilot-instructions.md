@@ -5,15 +5,15 @@
 
 ## Current snapshot (updated) 🧾
 - This repository now contains a minimal Python scaffold:
-  - `pyproject.toml` (Poetry) with dev deps: **pytest**, **black**, **ruff**
+  - `pyproject.toml` (Poetry) with dev deps: **pytest**, **black**, **pre-commit**
   - `src/sa/__init__.py` (package layout under `src/`)
   - `tests/test_placeholder.py` (pytest test)
-  - `.github/workflows/python-ci.yml` (CI: lint/format checks + pytest)
+  - `.github/workflows/python-ci.yml` (CI: pre-commit checks, tests + coverage)
   - `LICENSE` (MIT — update author/year if needed)
   - `.github/ISSUE_TEMPLATE/project-setup.md` and `.github/PULL_REQUEST_TEMPLATE.md`
   - `README.md` was updated to reflect the scaffold
 
-- Draft PR created: **#2** on branch `scaffold/python-mit-gha` (contains the scaffold + CI). If you prefer a different stack, respond to issue **#1**.
+- Draft PRs created: **#2** (scaffold), **#3** (quality), **#4** (professionalize), **#5** (advanced) on branches `scaffold/*`. If you prefer a different stack, respond to issue **#1**.
 
 ## First actions (MANDATORY) ✋
 1. **Confirm preferences** before changing language/CI/license further: reply to issue **#1** or comment on PR **#2** with choices (language, license, CI scope).
@@ -24,15 +24,15 @@
 - Recommended dev workflow:
   - Install Poetry: `python -m pip install --upgrade pip && pip install poetry`
   - Install deps: `poetry install --no-interaction`
-  - Run linters: `poetry run ruff check .`
-  - Check formatting: `poetry run black --check .`
-  - Run tests: `poetry run pytest -q`
-- CI workflow: `.github/workflows/python-ci.yml` performs the same steps during PRs and pushes to `main`.
+  - Install pre-commit hooks: `poetry run pre-commit install`
+  - Run pre-commit locally: `poetry run pre-commit run --all-files` (this runs `black` and `ruff` via hooks)
+  - Run tests: `poetry run pytest -q --cov=src --cov-report=xml`
+- CI workflow: `.github/workflows/python-ci.yml` runs pre-commit checks, tests with coverage, dependency review, and uploads coverage to Codecov (requires adding a Codecov token secret if desired for private repos).
 
 ## Project-specific conventions ⚙️
 - Package code lives under `src/` and tests under `tests/`.
 - Use **Poetry** metadata in `pyproject.toml` for packaging and dev tooling.
-- Formatting/linting: **black** + **ruff** are used in CI and should be respected in PRs.
+- Formatting/linting: use `pre-commit` (hooks include **black** and **ruff**) and respect these checks in PRs.
 - Use the provided PR template (`.github/PULL_REQUEST_TEMPLATE.md`) checklist when proposing changes.
 
 ## Allowed low-risk changes (can be implemented without explicit approval) 🔍
@@ -52,10 +52,29 @@
 ## Commit/PR etiquette ✍️
 - Use clear, imperative commit messages (e.g., `feat: add feature`, `chore(ci): add lint step`).
 - Use the PR template and checklist; mark CI-related checks as passing before requesting review.
+<<<<<<< HEAD
+
+---
+If anything in this file is unclear or you'd like more examples (e.g., alternative scaffolding for Node or Go), tell me which sections to expand or any repo-specific policies you want enforced. 🙏
+=======
+>>>>>>> 8eedf81 (docs(copilot-instructions): document Python scaffold, CI, and local dev commands)
 
 ## Safety & assumptions ⚠️
 - If repository intent is ambiguous, **stop and ask**—do not add implementation that could conflict with the owner's goals.
 - Avoid adding third-party services or secrets. If a service is necessary, document required secrets and request them explicitly from maintainers.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 ---
 If anything in this file is unclear or you'd like more examples (e.g., alternative scaffolding for Node or Go), tell me which sections to expand or any repo-specific policies you want enforced. 🙏
+=======
+## Helpful examples from this repo 📎
+- `README.md` — short single-line file; use it as the authoritative source for any initial wording changes.
+
+---
+If anything in this file is unclear or incomplete, please tell me which sections to expand or any repo-specific policies you want enforced. 🙏
+>>>>>>> 2d0fe14 (chore(scaffold): add minimal Python scaffold, CI, and MIT license)
+=======
+---
+If anything in this file is unclear or you'd like more examples (e.g., alternative scaffolding for Node or Go), tell me which sections to expand or any repo-specific policies you want enforced. 🙏
+>>>>>>> 8eedf81 (docs(copilot-instructions): document Python scaffold, CI, and local dev commands)
