@@ -24,7 +24,7 @@
 - Recommended dev workflow:
   - Install Poetry: `python -m pip install --upgrade pip && pip install poetry`
   - Install deps: `poetry install --no-interaction`
-  - Run linters: `poetry run ruff check .`
+  - Run linters: `poetry run pre-commit run --all-files`
   - Check formatting: `poetry run black --check .`
   - Run tests: `poetry run pytest -q`
 - CI workflow: `.github/workflows/python-ci.yml` performs the same steps during PRs and pushes to `main`.

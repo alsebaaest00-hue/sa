@@ -4,7 +4,7 @@ Thanks for your interest in contributing! Small, focused PRs are easiest to revi
 
 Before you open a PR:
 - Open an issue for non-trivial changes to discuss scope and design.
-- Run tests and linters locally: `poetry install --no-interaction` then `poetry run pytest -q` and `poetry run ruff check .`.
+- Run tests and linters locally: `poetry install --no-interaction` then `poetry run pytest -q` and `poetry run pre-commit run --all-files`.
 - Run formatting and pre-commit hooks: `poetry run pre-commit install` then `poetry run pre-commit run --all-files`.
 
 PR checklist:

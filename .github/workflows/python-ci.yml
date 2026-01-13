@@ -23,12 +23,17 @@ jobs:
       - name: Run pre-commit checks
         run: |
           poetry run pre-commit run --all-files
-      - name: Lint (ruff)
+      - name: Run tests (with coverage)
         run: |
-          poetry run ruff check .
-      - name: Format check (black)
+          poetry run pytest -q --cov=src --cov-report=xml
+
+      - name: Check Codecov token
+        if: ${{ !secrets.CODECOV_TOKEN }}
         run: |
-          poetry run black --check .
-      - name: Run tests
-        run: |
-          poetry run pytest -q
+          echo "Codecov token not set; skipping upload. To enable uploads, add CODECOV_TOKEN to repository secrets."
+      - name: Upload coverage to Codecov
+        if: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+          fail_ci_if_error: true
