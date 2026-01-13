@@ -52,14 +52,18 @@
 ## Commit/PR etiquette ✍️
 - Use clear, imperative commit messages (e.g., `feat: add feature`, `chore(ci): add lint step`).
 - Use the PR template and checklist; mark CI-related checks as passing before requesting review.
+<<<<<<< HEAD
 
 ---
 If anything in this file is unclear or you'd like more examples (e.g., alternative scaffolding for Node or Go), tell me which sections to expand or any repo-specific policies you want enforced. 🙏
+=======
+>>>>>>> 8eedf81 (docs(copilot-instructions): document Python scaffold, CI, and local dev commands)
 
 ## Safety & assumptions ⚠️
 - If repository intent is ambiguous, **stop and ask**—do not add implementation that could conflict with the owner's goals.
 - Avoid adding third-party services or secrets. If a service is necessary, document required secrets and request them explicitly from maintainers.
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ---
 If anything in this file is unclear or you'd like more examples (e.g., alternative scaffolding for Node or Go), tell me which sections to expand or any repo-specific policies you want enforced. 🙏
@@ -70,3 +74,7 @@ If anything in this file is unclear or you'd like more examples (e.g., alternati
 ---
 If anything in this file is unclear or incomplete, please tell me which sections to expand or any repo-specific policies you want enforced. 🙏
 >>>>>>> 2d0fe14 (chore(scaffold): add minimal Python scaffold, CI, and MIT license)
+=======
+---
+If anything in this file is unclear or you'd like more examples (e.g., alternative scaffolding for Node or Go), tell me which sections to expand or any repo-specific policies you want enforced. 🙏
+>>>>>>> 8eedf81 (docs(copilot-instructions): document Python scaffold, CI, and local dev commands)
