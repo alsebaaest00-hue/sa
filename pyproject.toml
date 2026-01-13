@@ -11,7 +11,6 @@ python = "^3.11"
 pytest = "^7.0"
 pytest-cov = "^4.0"
 black = "^24.0"
-ruff = "^0.28"
 pre-commit = "^4.4"
 
 [build-system]

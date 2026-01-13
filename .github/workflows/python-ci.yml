@@ -23,12 +23,6 @@ jobs:
       - name: Run pre-commit checks
         run: |
           poetry run pre-commit run --all-files
-      - name: Lint (ruff)
-        run: |
-          poetry run ruff check .
-      - name: Format check (black)
-        run: |
-          poetry run black --check .
       - name: Run tests (with coverage)
         run: |
           poetry run pytest -q --cov=src --cov-report=xml
