@@ -15,6 +15,16 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+      - name: Run CI diagnostics
+        run: |
+          echo "=== Python & tool versions ==="
+          python --version
+          pip --version
+          poetry --version || true
+          echo "=== Environment vars (sorted) ==="
+          env | sort
+          echo "=== Workspace files root ==="
+          ls -la
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
