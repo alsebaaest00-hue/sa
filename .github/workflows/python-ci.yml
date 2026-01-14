@@ -22,9 +22,19 @@ jobs:
           pip --version
           poetry --version || true
           echo "=== Environment vars (sorted) ==="
-          env | sort
-          echo "=== Workspace files root ==="
-          ls -la
+          env | sort > ci-diag.txt
+          echo "=== Additional info ===" >> ci-diag.txt
+          echo "=== Workspace files root ===" >> ci-diag.txt
+          ls -la >> ci-diag.txt
+          echo "=== End diagnostics ===" >> ci-diag.txt
+
+      - name: Upload diagnostics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-diagnostics
+          path: ci-diag.txt
+        # continue even if upload fails (diagnostics are best-effort)
+        continue-on-error: true
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
