@@ -17,6 +17,7 @@ st.set_page_config(
 try:
     from sa.generators import ImageGenerator, VideoGenerator, AudioGenerator
     from sa.utils import config, SuggestionEngine
+    from sa.ui.templates import show_templates_and_tips
 except ImportError:
     st.error("⚠️ خطأ في استيراد المكونات. تأكد من تثبيت جميع التبعيات.")
     st.stop()
@@ -93,13 +94,14 @@ def main():
         )
 
     # Main tabs
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
         [
             "🖼️ توليد الصور",
             "🎬 توليد الفيديو",
             "🎤 توليد الصوت",
             "🎯 مشروع كامل",
             "📂 المعرض",
+            "📚 القوالس والنصائح",
         ]
     )
 
@@ -364,6 +366,10 @@ def main():
                     )
         else:
             st.info("لا توجد صوتيات بعد")
+
+    # Tab 6: Templates and Tips
+    with tab6:
+        show_templates_and_tips()
 
 
 if __name__ == "__main__":
