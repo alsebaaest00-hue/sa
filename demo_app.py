@@ -60,11 +60,12 @@ with tab1:
                 
                 # Display
                 st.success("✅ تم الإنشاء!")
-                st.image(img, caption="صورة تجريبية", use_container_width=True)
+                st.image(img, caption="صورة تجريبية", width=512)
                 
                 # Save button
                 buf = io.BytesIO()
                 img.save(buf, format='PNG')
+                buf.seek(0)
                 st.download_button(
                     "⬇️ تحميل الصورة",
                     data=buf.getvalue(),
