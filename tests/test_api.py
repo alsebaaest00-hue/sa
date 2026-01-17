@@ -1,7 +1,7 @@
 """Tests for the API endpoints"""
 
-import pytest
 from fastapi.testclient import TestClient
+
 from sa.api import app
 
 client = TestClient(app)

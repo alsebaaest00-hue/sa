@@ -1,7 +1,7 @@
 """Pydantic models for API requests and responses"""
 
+
 from pydantic import BaseModel, Field
-from typing import Optional, List
 
 
 class ImageGenerationRequest(BaseModel):
@@ -28,8 +28,8 @@ class ImageGenerationResponse(BaseModel):
 
     job_id: str
     status: str
-    images: Optional[List[str]] = None
-    message: Optional[str] = None
+    images: list[str] | None = None
+    message: str | None = None
 
 
 class AudioGenerationRequest(BaseModel):
@@ -54,16 +54,16 @@ class AudioGenerationResponse(BaseModel):
 
     job_id: str
     status: str
-    audio_url: Optional[str] = None
-    message: Optional[str] = None
+    audio_url: str | None = None
+    message: str | None = None
 
 
 class VideoGenerationRequest(BaseModel):
     """Request model for video generation"""
 
-    image_paths: List[str] = Field(..., description="List of image file paths")
+    image_paths: list[str] = Field(..., description="List of image file paths")
     duration_per_image: int = Field(3, ge=1, le=10, description="Duration per image in seconds")
-    audio_path: Optional[str] = Field(None, description="Optional audio track path")
+    audio_path: str | None = Field(None, description="Optional audio track path")
 
     class Config:
         json_schema_extra = {
@@ -80,17 +80,15 @@ class VideoGenerationResponse(BaseModel):
 
     job_id: str
     status: str
-    video_url: Optional[str] = None
-    message: Optional[str] = None
+    video_url: str | None = None
+    message: str | None = None
 
 
 class PromptImprovementRequest(BaseModel):
     """Request model for prompt improvement"""
 
     prompt: str = Field(..., description="Original prompt")
-    content_type: str = Field(
-        "image", description="Type of content: image, video, or audio"
-    )
+    content_type: str = Field("image", description="Type of content: image, video, or audio")
 
     class Config:
         json_schema_extra = {
@@ -127,7 +125,7 @@ class PromptVariationsResponse(BaseModel):
     """Response model for prompt variations"""
 
     original: str
-    variations: List[str]
+    variations: list[str]
 
 
 class ScriptGenerationRequest(BaseModel):
@@ -156,7 +154,7 @@ class ScriptGenerationResponse(BaseModel):
     """Response model for script generation"""
 
     idea: str
-    scenes: List[Scene]
+    scenes: list[Scene]
 
 
 class HealthResponse(BaseModel):
@@ -177,9 +175,9 @@ class ConfigStatusResponse(BaseModel):
 class OutputsResponse(BaseModel):
     """Response model for listing outputs"""
 
-    images: List[str]
-    videos: List[str]
-    audio: List[str]
+    images: list[str]
+    videos: list[str]
+    audio: list[str]
 
 
 class DeleteResponse(BaseModel):

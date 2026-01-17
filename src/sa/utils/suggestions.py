@@ -1,7 +1,6 @@
 """AI-powered suggestion system for content generation"""
 
 import os
-from typing import List, Dict, Optional
 
 import openai
 
@@ -9,7 +8,7 @@ import openai
 class SuggestionEngine:
     """Generate smart suggestions for prompts and improvements"""
 
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: str | None = None):
         """
         Initialize the suggestion engine
 
@@ -62,7 +61,7 @@ class SuggestionEngine:
         }
         return f"{prompt}, {enhancements.get(content_type, 'high quality')}"
 
-    def generate_variations(self, prompt: str, count: int = 5) -> List[str]:
+    def generate_variations(self, prompt: str, count: int = 5) -> list[str]:
         """
         Generate prompt variations
 
@@ -94,14 +93,12 @@ class SuggestionEngine:
             content = response.choices[0].message.content
             if not content:
                 return []
-            return [
-                line.strip() for line in content.strip().split("\n") if line.strip()
-            ][:count]
+            return [line.strip() for line in content.strip().split("\n") if line.strip()][:count]
         except Exception as e:
             print(f"Error generating variations: {e}")
             return self._fallback_variations(prompt, count)
 
-    def _fallback_variations(self, prompt: str, count: int) -> List[str]:
+    def _fallback_variations(self, prompt: str, count: int) -> list[str]:
         """Generate variations without API"""
         styles = [
             "realistic style",
@@ -113,7 +110,7 @@ class SuggestionEngine:
         ]
         return [f"{prompt} in {style}" for style in styles[:count]]
 
-    def suggest_next_scene(self, current_scene: str) -> List[str]:
+    def suggest_next_scene(self, current_scene: str) -> list[str]:
         """
         Suggest next scenes for video storytelling
 
@@ -145,9 +142,7 @@ class SuggestionEngine:
             content = response.choices[0].message.content
             if not content:
                 return []
-            return [
-                line.strip() for line in content.strip().split("\n") if line.strip()
-            ]
+            return [line.strip() for line in content.strip().split("\n") if line.strip()]
         except Exception as e:
             print(f"Error suggesting scenes: {e}")
             return [
@@ -156,7 +151,7 @@ class SuggestionEngine:
                 "Close-up detail from the scene",
             ]
 
-    def suggest_music_mood(self, scene_description: str) -> Dict[str, str]:
+    def suggest_music_mood(self, scene_description: str) -> dict[str, str]:
         """
         Suggest appropriate music mood for a scene
 
@@ -203,7 +198,7 @@ class SuggestionEngine:
             print(f"Error suggesting music: {e}")
             return {"mood": "calm", "tempo": "medium", "genre": "ambient"}
 
-    def generate_script_from_idea(self, idea: str, num_scenes: int = 5) -> List[Dict[str, str]]:
+    def generate_script_from_idea(self, idea: str, num_scenes: int = 5) -> list[dict[str, str]]:
         """
         Generate a complete script from an idea
 
@@ -254,7 +249,7 @@ class SuggestionEngine:
             print(f"Error generating script: {e}")
             return self._fallback_script(idea)
 
-    def _fallback_script(self, idea: str) -> List[Dict[str, str]]:
+    def _fallback_script(self, idea: str) -> list[dict[str, str]]:
         """Generate basic script without API"""
         return [
             {

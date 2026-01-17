@@ -1,8 +1,9 @@
 """إدارة مفاتيح API - واجهة سهلة لإضافة وتحديث المفاتيح"""
 
-import streamlit as st
 import os
 from pathlib import Path
+
+import streamlit as st
 
 st.set_page_config(page_title="إدارة مفاتيح API", page_icon="🔑", layout="centered")
 
@@ -17,7 +18,7 @@ env_file = Path("/workspaces/sa/.env")
 def read_env():
     """قراءة ملف .env الحالي"""
     if env_file.exists():
-        with open(env_file, "r", encoding="utf-8") as f:
+        with open(env_file, encoding="utf-8") as f:
             return f.read()
     return ""
 

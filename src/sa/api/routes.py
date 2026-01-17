@@ -1,31 +1,32 @@
 """API route handlers"""
 
-from fastapi import APIRouter, HTTPException, BackgroundTasks
-from fastapi.responses import FileResponse
+import logging
 import os
 import uuid
-import logging
 
-from sa.generators import ImageGenerator, VideoGenerator, AudioGenerator
-from sa.utils import config, SuggestionEngine
+from fastapi import APIRouter, BackgroundTasks, HTTPException
+from fastapi.responses import FileResponse
+
 from sa.api.models import (
-    ImageGenerationRequest,
-    ImageGenerationResponse,
     AudioGenerationRequest,
     AudioGenerationResponse,
-    VideoGenerationRequest,
-    VideoGenerationResponse,
+    ConfigStatusResponse,
+    DeleteResponse,
+    HealthResponse,
+    ImageGenerationRequest,
+    ImageGenerationResponse,
+    OutputsResponse,
     PromptImprovementRequest,
     PromptImprovementResponse,
     PromptVariationsRequest,
     PromptVariationsResponse,
     ScriptGenerationRequest,
     ScriptGenerationResponse,
-    HealthResponse,
-    ConfigStatusResponse,
-    OutputsResponse,
-    DeleteResponse,
+    VideoGenerationRequest,
+    VideoGenerationResponse,
 )
+from sa.generators import AudioGenerator, ImageGenerator, VideoGenerator
+from sa.utils import SuggestionEngine, config
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +66,7 @@ if config.openai_api_key:
 
 # ============= Health & Configuration Routes =============
 
+
 @health_router.get("/health", response_model=HealthResponse)
 async def health_check():
     """Check API health and service availability"""
@@ -91,10 +93,9 @@ async def config_status():
 
 # ============= Image Routes =============
 
+
 @images_router.post("/generate", response_model=ImageGenerationResponse)
-async def generate_image(
-    request: ImageGenerationRequest, background_tasks: BackgroundTasks
-):
+async def generate_image(request: ImageGenerationRequest, background_tasks: BackgroundTasks):
     """Generate an image from text description"""
     if not image_generator:
         raise HTTPException(
@@ -136,7 +137,7 @@ async def generate_image(
 
     except Exception as e:
         logger.error(f"Error generating image: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @images_router.get("/{filename}")
@@ -151,6 +152,7 @@ async def get_image(filename: str):
 
 
 # ============= Audio Routes =============
+
 
 @audio_router.post("/generate", response_model=AudioGenerationResponse)
 async def generate_audio(request: AudioGenerationRequest):
@@ -189,7 +191,7 @@ async def generate_audio(request: AudioGenerationRequest):
 
     except Exception as e:
         logger.error(f"Error generating audio: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @audio_router.get("/{filename}")
@@ -204,6 +206,7 @@ async def get_audio(filename: str):
 
 
 # ============= Video Routes =============
+
 
 @videos_router.post("/generate", response_model=VideoGenerationResponse)
 async def generate_video(request: VideoGenerationRequest):
@@ -222,9 +225,7 @@ async def generate_video(request: VideoGenerationRequest):
         # Verify all images exist
         for img_path in request.image_paths:
             if not os.path.exists(img_path):
-                raise HTTPException(
-                    status_code=404, detail=f"Image not found: {img_path}"
-                )
+                raise HTTPException(status_code=404, detail=f"Image not found: {img_path}")
 
         output_path = f"{config.output_dir}/video_{job_id}.mp4"
 
@@ -257,7 +258,7 @@ async def generate_video(request: VideoGenerationRequest):
 
     except Exception as e:
         logger.error(f"Error generating video: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @videos_router.get("/{filename}")
@@ -272,6 +273,7 @@ async def get_video(filename: str):
 
 
 # ============= AI Suggestions Routes =============
+
 
 @suggestions_router.post("/improve", response_model=PromptImprovementResponse)
 async def improve_prompt(request: PromptImprovementRequest):
@@ -295,7 +297,7 @@ async def improve_prompt(request: PromptImprovementRequest):
 
     except Exception as e:
         logger.error(f"Error improving prompt: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @suggestions_router.post("/variations", response_model=PromptVariationsResponse)
@@ -308,16 +310,12 @@ async def generate_variations(request: PromptVariationsRequest):
         )
 
     try:
-        variations = suggestion_engine.generate_variations(
-            request.prompt, request.count
-        )
-        return PromptVariationsResponse(
-            original=request.prompt, variations=variations
-        )
+        variations = suggestion_engine.generate_variations(request.prompt, request.count)
+        return PromptVariationsResponse(original=request.prompt, variations=variations)
 
     except Exception as e:
         logger.error(f"Error generating variations: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @suggestions_router.post("/script", response_model=ScriptGenerationResponse)
@@ -342,10 +340,11 @@ async def generate_script(request: ScriptGenerationRequest):
 
     except Exception as e:
         logger.error(f"Error generating script: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # ============= Utility Routes =============
+
 
 @utilities_router.get("", response_model=OutputsResponse)
 async def list_outputs():
@@ -372,7 +371,7 @@ async def list_outputs():
 
     except Exception as e:
         logger.error(f"Error listing outputs: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @utilities_router.delete("/{filename}", response_model=DeleteResponse)
@@ -389,7 +388,7 @@ async def delete_output(filename: str):
 
     except Exception as e:
         logger.error(f"Error deleting file: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # Combine all routers

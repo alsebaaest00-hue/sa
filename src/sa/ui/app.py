@@ -15,8 +15,8 @@ st.set_page_config(
 
 # Import generators and utilities
 try:
-    from sa.generators import ImageGenerator, VideoGenerator, AudioGenerator
-    from sa.utils import config, SuggestionEngine
+    from sa.generators import AudioGenerator, ImageGenerator, VideoGenerator
+    from sa.utils import SuggestionEngine, config
 except ImportError:
     st.error("⚠️ خطأ في استيراد المكونات. تأكد من تثبيت جميع التبعيات.")
     st.stop()

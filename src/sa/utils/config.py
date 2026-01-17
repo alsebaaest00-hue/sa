@@ -1,8 +1,8 @@
 """Configuration management for the application"""
 
 import os
-from typing import Optional
 from dataclasses import dataclass
+
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -14,9 +14,9 @@ class Config:
     """Application configuration"""
 
     # API Keys
-    openai_api_key: Optional[str] = None
-    replicate_api_key: Optional[str] = None
-    elevenlabs_api_key: Optional[str] = None
+    openai_api_key: str | None = None
+    replicate_api_key: str | None = None
+    elevenlabs_api_key: str | None = None
 
     # Paths
     output_dir: str = "outputs"

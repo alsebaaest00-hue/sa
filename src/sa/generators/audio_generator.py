@@ -1,7 +1,6 @@
 """Text-to-Speech Audio Generator"""
 
 import os
-from typing import Optional, Dict
 
 try:
     from elevenlabs import ElevenLabs
@@ -16,7 +15,7 @@ from pydub import AudioSegment
 class AudioGenerator:
     """Generate audio from text using text-to-speech"""
 
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: str | None = None):
         """
         Initialize the audio generator
 
@@ -38,7 +37,7 @@ class AudioGenerator:
         voice: str = "Adam",
         model: str = "eleven_multilingual_v2",
         output_path: str = "output.mp3",
-    ) -> Optional[str]:
+    ) -> str | None:
         """
         Generate speech from text
 
@@ -74,7 +73,7 @@ class AudioGenerator:
             # Fallback to basic TTS if ElevenLabs fails
             return self._fallback_tts(text, output_path)
 
-    def _fallback_tts(self, text: str, output_path: str) -> Optional[str]:
+    def _fallback_tts(self, text: str, output_path: str) -> str | None:
         """
         Fallback TTS using gTTS (free alternative)
 
@@ -118,7 +117,7 @@ class AudioGenerator:
         music_path: str,
         output_path: str = "mixed_audio.mp3",
         music_volume: float = 0.3,
-    ) -> Optional[str]:
+    ) -> str | None:
         """
         Mix voice audio with background music
 
@@ -154,8 +153,8 @@ class AudioGenerator:
             return None
 
     def generate_narration_from_script(
-        self, script_segments: list[Dict[str, str]], output_path: str = "narration.mp3"
-    ) -> Optional[str]:
+        self, script_segments: list[dict[str, str]], output_path: str = "narration.mp3"
+    ) -> str | None:
         """
         Generate narration from multiple script segments
 

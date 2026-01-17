@@ -1,22 +1,21 @@
 """Text-to-Video Generator"""
 
 import os
-from typing import Optional
 
 import replicate
 from moviepy.editor import (
-    ImageClip,
     AudioFileClip,
     CompositeAudioClip,
-    concatenate_videoclips,
+    ImageClip,
     VideoFileClip,
+    concatenate_videoclips,
 )
 
 
 class VideoGenerator:
     """Generate videos from text prompts and combine with audio"""
 
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: str | None = None):
         """
         Initialize the video generator
 
@@ -27,7 +26,7 @@ class VideoGenerator:
         if self.api_key:
             os.environ["REPLICATE_API_TOKEN"] = self.api_key
 
-    def generate_from_text(self, prompt: str, duration: int = 5, fps: int = 24) -> Optional[str]:
+    def generate_from_text(self, prompt: str, duration: int = 5, fps: int = 24) -> str | None:
         """
         Generate video from text prompt
 
@@ -54,7 +53,7 @@ class VideoGenerator:
         image_paths: list[str],
         duration_per_image: int = 3,
         output_path: str = "output.mp4",
-    ) -> Optional[str]:
+    ) -> str | None:
         """
         Create slideshow video from images
 
@@ -84,7 +83,7 @@ class VideoGenerator:
         video_path: str,
         audio_path: str,
         output_path: str = "output_with_audio.mp4",
-    ) -> Optional[str]:
+    ) -> str | None:
         """
         Add audio to video
 
@@ -120,7 +119,7 @@ class VideoGenerator:
         background_audio: str,
         background_volume: float = 0.3,
         output_path: str = "output_mixed.mp4",
-    ) -> Optional[str]:
+    ) -> str | None:
         """
         Mix voice and background audio and add to video
 

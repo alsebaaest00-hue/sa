@@ -1,8 +1,9 @@
 """Example scripts demonstrating SA platform usage"""
 
-from sa.generators import ImageGenerator, VideoGenerator, AudioGenerator
-from sa.utils import config, SuggestionEngine
 import os
+
+from sa.generators import AudioGenerator, ImageGenerator, VideoGenerator
+from sa.utils import SuggestionEngine, config
 
 
 def example_image_generation():

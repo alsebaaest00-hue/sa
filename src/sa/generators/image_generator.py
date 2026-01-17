@@ -2,7 +2,6 @@
 
 import os
 from io import BytesIO
-from typing import Optional
 
 import replicate
 import requests
@@ -12,7 +11,7 @@ from PIL import Image
 class ImageGenerator:
     """Generate images from text prompts using AI models"""
 
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: str | None = None):
         """
         Initialize the image generator
 
@@ -82,7 +81,7 @@ class ImageGenerator:
 
         return f"{prompt}, {', '.join(enhancements)}"
 
-    def download_image(self, url: str, save_path: str) -> Optional[str]:
+    def download_image(self, url: str, save_path: str) -> str | None:
         """
         Download image from URL
 

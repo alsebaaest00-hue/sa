@@ -1,8 +1,9 @@
 """SA Platform API - FastAPI REST API"""
 
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import logging
 
 from sa.api.routes import get_router
 

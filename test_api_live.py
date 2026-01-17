@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Quick API test script"""
 
-import requests
 import json
+
+import requests
 
 API_URL = "http://localhost:8000"
 
@@ -12,7 +13,7 @@ def print_response(response):
     print(f"Status: {response.status_code}")
     try:
         print(json.dumps(response.json(), indent=2, ensure_ascii=False))
-    except:
+    except Exception:
         print(response.text)
     print("-" * 50)
 
