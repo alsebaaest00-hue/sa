@@ -1,6 +1,5 @@
 """Tests for ImageGenerator"""
 
-import pytest
 from sa.generators.image_generator import ImageGenerator
 
 

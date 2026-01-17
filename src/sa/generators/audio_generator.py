@@ -1,10 +1,11 @@
 """Text-to-Speech Audio Generator"""
 
 import os
-from typing import Optional, Dict, Any, Literal
+from typing import Optional, Dict
 
 try:
     from elevenlabs import ElevenLabs
+
     ELEVENLABS_AVAILABLE = True
 except ImportError:
     ELEVENLABS_AVAILABLE = False
@@ -55,7 +56,12 @@ class AudioGenerator:
             return self._fallback_tts(text, output_path)
 
         try:
-            audio = self.client.generate(text=text, voice=voice, model=model)
+            # Use text_to_speech.convert instead of deprecated generate
+            audio = self.client.text_to_speech.convert(
+                text=text,
+                voice_id=voice,
+                model_id=model,
+            )
 
             # Save the audio
             with open(output_path, "wb") as f:
@@ -101,7 +107,7 @@ class AudioGenerator:
 
         try:
             voices_list = self.client.voices.get_all()
-            return [voice.name for voice in voices_list.voices]
+            return [voice.name for voice in voices_list.voices if voice.name]
         except Exception as e:
             print(f"Error fetching voices: {e}")
             return ["Adam", "Bella", "Antoni", "Rachel", "Domi"]

@@ -194,17 +194,17 @@ def example_complete_workflow():
 
     # Step 3: Generate narration audio
     print("\nStep 3: Generating narration...")
-    if config.elevenlabs_api_key or True:  # gTTS fallback available
-        audio_gen = AudioGenerator(config.elevenlabs_api_key)
-        narration_texts = [scene["narration"] for scene in script]
-        audio_path = f"{config.output_dir}/narration.mp3"
+    # Always try to generate audio - AudioGenerator has gTTS fallback
+    audio_gen = AudioGenerator(config.elevenlabs_api_key)
+    narration_texts = [scene["narration"] for scene in script]
+    audio_path = f"{config.output_dir}/narration.mp3"
 
-        audio = audio_gen.generate_narration_from_script(narration_texts, audio_path)
-        if audio:
-            print("✅ Narration generated")
+    audio = audio_gen.generate_narration_from_script(narration_texts, audio_path)
+    if audio:
+        print("✅ Narration generated")
     else:
         audio_path = None
-        print("⚠️ Audio generation skipped")
+        print("⚠️ Audio generation failed")
 
     # Step 4: Create video
     print("\nStep 4: Creating final video...")

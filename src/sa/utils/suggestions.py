@@ -1,8 +1,9 @@
 """AI-powered suggestion system for content generation"""
 
-from typing import List, Dict, Optional
-import openai
 import os
+from typing import List, Dict, Optional
+
+import openai
 
 
 class SuggestionEngine:
@@ -36,13 +37,18 @@ class SuggestionEngine:
                 messages=[
                     {
                         "role": "system",
-                        "content": f"You are an expert in creating detailed prompts for {content_type} generation. Improve the user's prompt to be more detailed and effective.",
+                        "content": (
+                            f"You are an expert in creating detailed prompts for "
+                            f"{content_type} generation. Improve the user's prompt "
+                            f"to be more detailed and effective."
+                        ),
                     },
                     {"role": "user", "content": f"Improve this prompt: {prompt}"},
                 ],
                 max_tokens=200,
             )
-            return response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            return content.strip() if content else ""
         except Exception as e:
             print(f"Error improving prompt: {e}")
             return self._fallback_improve(prompt, content_type)
@@ -73,7 +79,10 @@ class SuggestionEngine:
                 messages=[
                     {
                         "role": "system",
-                        "content": "Generate creative variations of the given prompt. Each variation should be on a new line.",
+                        "content": (
+                            "Generate creative variations of the given prompt. "
+                            "Each variation should be on a new line."
+                        ),
                     },
                     {
                         "role": "user",
@@ -82,10 +91,12 @@ class SuggestionEngine:
                 ],
                 max_tokens=300,
             )
-            content = response.choices[0].message.content.strip()
-            return [line.strip() for line in content.split("\n") if line.strip()][
-                :count
-            ]
+            content = response.choices[0].message.content
+            if not content:
+                return []
+            return [
+                line.strip() for line in content.strip().split("\n") if line.strip()
+            ][:count]
         except Exception as e:
             print(f"Error generating variations: {e}")
             return self._fallback_variations(prompt, count)
@@ -118,23 +129,31 @@ class SuggestionEngine:
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are a creative storyteller. Suggest logical next scenes.",
+                        "content": (
+                            "You are a creative storyteller. " "Suggest logical next scenes."
+                        ),
                     },
                     {
                         "role": "user",
-                        "content": f"Current scene: {current_scene}\nSuggest 3 possible next scenes:",
+                        "content": (
+                            f"Current scene: {current_scene}\n" f"Suggest 3 possible next scenes:"
+                        ),
                     },
                 ],
                 max_tokens=200,
             )
-            content = response.choices[0].message.content.strip()
-            return [line.strip() for line in content.split("\n") if line.strip()]
+            content = response.choices[0].message.content
+            if not content:
+                return []
+            return [
+                line.strip() for line in content.strip().split("\n") if line.strip()
+            ]
         except Exception as e:
             print(f"Error suggesting scenes: {e}")
             return [
                 f"Continue from: {current_scene}",
-                f"Transition to a different location",
-                f"Close-up detail from the scene",
+                "Transition to a different location",
+                "Close-up detail from the scene",
             ]
 
     def suggest_music_mood(self, scene_description: str) -> Dict[str, str]:
@@ -162,10 +181,13 @@ class SuggestionEngine:
                 ],
                 max_tokens=100,
             )
-            content = response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if not content:
+                return {"mood": "calm", "tempo": "medium", "genre": "ambient"}
+            content_str = content.strip()
 
             # Parse response
-            lines = content.lower().split("\n")
+            lines = content_str.lower().split("\n")
             result = {"mood": "calm", "tempo": "medium", "genre": "ambient"}
 
             for line in lines:
@@ -181,12 +203,13 @@ class SuggestionEngine:
             print(f"Error suggesting music: {e}")
             return {"mood": "calm", "tempo": "medium", "genre": "ambient"}
 
-    def generate_script_from_idea(self, idea: str) -> List[Dict[str, str]]:
+    def generate_script_from_idea(self, idea: str, num_scenes: int = 5) -> List[Dict[str, str]]:
         """
         Generate a complete script from an idea
 
         Args:
             idea: Basic story idea
+            num_scenes: Number of scenes to generate
 
         Returns:
             List of scene dictionaries with text and visuals
@@ -197,16 +220,25 @@ class SuggestionEngine:
                 messages=[
                     {
                         "role": "system",
-                        "content": "Create a video script with scene descriptions and narration.",
+                        "content": (
+                            "Create a video script with scene descriptions " "and narration."
+                        ),
                     },
                     {
                         "role": "user",
-                        "content": f"Create a 5-scene video script for: {idea}\nFormat each scene as: Scene X: [visual description] | Narration: [text]",
+                        "content": (
+                            f"Create a {num_scenes}-scene video script for: {idea}\n"
+                            f"Format each scene as: Scene X: [visual description] | "
+                            f"Narration: [text]"
+                        ),
                     },
                 ],
                 max_tokens=500,
             )
-            content = response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if not content:
+                return []
+            content = content.strip()
 
             # Parse scenes
             scenes = []

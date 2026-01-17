@@ -1,11 +1,12 @@
 """Text-to-Image Generator using AI models"""
 
 import os
-from typing import Optional, Dict, Any
-import replicate
-from PIL import Image
-import requests
 from io import BytesIO
+from typing import Optional
+
+import replicate
+import requests
+from PIL import Image
 
 
 class ImageGenerator:
@@ -93,7 +94,7 @@ class ImageGenerator:
             Path to saved image or None if failed
         """
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=30)
             response.raise_for_status()
 
             img = Image.open(BytesIO(response.content))

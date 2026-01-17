@@ -48,11 +48,11 @@ jobs:
           poetry run pytest -q --cov=src --cov-report=xml
 
       - name: Check Codecov token
-        if: ${{ !secrets.CODECOV_TOKEN }}
+        if: ${{ env.CODECOV_TOKEN == '' }}
         run: |
           echo "Codecov token not set; skipping upload. To enable uploads, add CODECOV_TOKEN to repository secrets."
       - name: Upload coverage to Codecov
-        if: ${{ secrets.CODECOV_TOKEN }}
+        if: ${{ env.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v4
         with:
           files: coverage.xml

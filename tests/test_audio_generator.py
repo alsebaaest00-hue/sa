@@ -1,6 +1,5 @@
 """Tests for AudioGenerator"""
 
-import pytest
 from sa.generators.audio_generator import AudioGenerator
 
 

@@ -1,7 +1,8 @@
 """Text-to-Video Generator"""
 
 import os
-from typing import Optional, Dict, Any
+from typing import Optional
+
 import replicate
 from moviepy.editor import (
     ImageClip,
@@ -26,9 +27,7 @@ class VideoGenerator:
         if self.api_key:
             os.environ["REPLICATE_API_TOKEN"] = self.api_key
 
-    def generate_from_text(
-        self, prompt: str, duration: int = 5, fps: int = 24
-    ) -> Optional[str]:
+    def generate_from_text(self, prompt: str, duration: int = 5, fps: int = 24) -> Optional[str]:
         """
         Generate video from text prompt
 
