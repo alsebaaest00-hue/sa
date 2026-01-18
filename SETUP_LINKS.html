@@ -10,7 +10,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -18,7 +18,7 @@
             padding: 20px;
             direction: rtl;
         }
-        
+
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -27,28 +27,28 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-        
+
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
         }
-        
+
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
         }
-        
+
         .header p {
             font-size: 1.2em;
             opacity: 0.9;
         }
-        
+
         .content {
             padding: 40px 30px;
         }
-        
+
         .section {
             margin-bottom: 40px;
             padding: 25px;
@@ -56,7 +56,7 @@
             border-radius: 15px;
             border-right: 5px solid #667eea;
         }
-        
+
         .section h2 {
             color: #667eea;
             margin-bottom: 20px;
@@ -65,13 +65,13 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .section h3 {
             color: #444;
             margin: 20px 0 10px;
             font-size: 1.3em;
         }
-        
+
         .link-card {
             background: white;
             padding: 20px;
@@ -80,24 +80,24 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        
+
         .link-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
-        
+
         .link-card h4 {
             color: #333;
             margin-bottom: 10px;
             font-size: 1.2em;
         }
-        
+
         .link-card p {
             color: #666;
             margin-bottom: 15px;
             line-height: 1.6;
         }
-        
+
         .link-button {
             display: inline-block;
             padding: 12px 30px;
@@ -109,15 +109,15 @@
             transition: transform 0.3s;
             margin-left: 10px;
         }
-        
+
         .link-button:hover {
             transform: scale(1.05);
         }
-        
+
         .link-button.secondary {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
-        
+
         .code-box {
             background: #2d2d2d;
             color: #f8f8f2;
@@ -127,13 +127,13 @@
             margin: 15px 0;
             overflow-x: auto;
         }
-        
+
         .code-box pre {
             margin: 0;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
-        
+
         .status {
             display: inline-block;
             padding: 5px 15px;
@@ -142,29 +142,29 @@
             font-weight: bold;
             margin-right: 10px;
         }
-        
+
         .status.required {
             background: #ffe0e0;
             color: #d32f2f;
         }
-        
+
         .status.optional {
             background: #fff9e0;
             color: #f57c00;
         }
-        
+
         .status.free {
             background: #e0f7e0;
             color: #388e3c;
         }
-        
+
         .checklist {
             background: white;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
         }
-        
+
         .checklist-item {
             padding: 15px;
             margin: 10px 0;
@@ -174,7 +174,7 @@
             align-items: center;
             gap: 15px;
         }
-        
+
         .checkbox {
             width: 24px;
             height: 24px;
@@ -182,19 +182,19 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        
+
         .footer {
             text-align: center;
             padding: 30px;
             background: #f8f9fa;
             color: #666;
         }
-        
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
             }
-            
+
             .section {
                 padding: 15px;
             }
@@ -207,12 +207,12 @@
             <h1>🔗 روابط إعداد منصة SA</h1>
             <p>جميع الروابط والخطوات المطلوبة لإكمال التثبيت</p>
         </div>
-        
+
         <div class="content">
             <!-- API Keys Section -->
             <div class="section">
                 <h2>🔑 الحصول على API Keys</h2>
-                
+
                 <div class="link-card">
                     <span class="status required">مطلوب للصور</span>
                     <h4>1️⃣ Replicate API Token</h4>
@@ -228,7 +228,7 @@
 REPLICATE_API_TOKEN=r8_xxxxxxxxxxxxxxxxxxxxx</pre>
                     </div>
                 </div>
-                
+
                 <div class="link-card">
                     <span class="status required">مطلوب للذكاء الاصطناعي</span>
                     <h4>2️⃣ OpenAI API Key</h4>
@@ -244,7 +244,7 @@ REPLICATE_API_TOKEN=r8_xxxxxxxxxxxxxxxxxxxxx</pre>
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxx</pre>
                     </div>
                 </div>
-                
+
                 <div class="link-card">
                     <span class="status optional">اختياري</span>
                     <span class="status free">بديل مجاني متوفر</span>
@@ -264,11 +264,11 @@ ELEVENLABS_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
                     </div>
                 </div>
             </div>
-            
+
             <!-- Installation Section -->
             <div class="section">
                 <h2>📦 تثبيت البرامج المطلوبة</h2>
-                
+
                 <h3>1. تثبيت FFmpeg (ضروري جداً)</h3>
                 <div class="code-box">
 <pre># في terminal الخاص بك:
@@ -278,7 +278,7 @@ sudo apt install -y ffmpeg imagemagick
 # للتحقق من التثبيت:
 ffmpeg -version</pre>
                 </div>
-                
+
                 <h3>2. تثبيت تبعيات Python</h3>
                 <div class="code-box">
 <pre># تثبيت جميع المكتبات المطلوبة:
@@ -287,7 +287,7 @@ poetry install --no-interaction
 # أو باستخدام pip:
 pip install -r requirements.txt</pre>
                 </div>
-                
+
                 <h3>3. إعداد ملف .env</h3>
                 <div class="code-box">
 <pre># نسخ ملف القالب:
@@ -299,11 +299,11 @@ nano .env
 # أو استخدم أي محرر نصوص تفضله</pre>
                 </div>
             </div>
-            
+
             <!-- Testing Section -->
             <div class="section">
                 <h2>🧪 اختبار التثبيت</h2>
-                
+
                 <div class="code-box">
 <pre># اختبار جميع المكونات:
 poetry run pytest tests/ -v
@@ -315,11 +315,11 @@ poetry run pytest tests/ -v
 poetry run streamlit run src/sa/ui/app.py</pre>
                 </div>
             </div>
-            
+
             <!-- Checklist -->
             <div class="section">
                 <h2>✅ قائمة التحقق</h2>
-                
+
                 <div class="checklist">
                     <div class="checklist-item">
                         <input type="checkbox" class="checkbox" id="check1">
@@ -351,11 +351,11 @@ poetry run streamlit run src/sa/ui/app.py</pre>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Quick Links -->
             <div class="section">
                 <h2>🔗 روابط سريعة مفيدة</h2>
-                
+
                 <div class="link-card">
                     <h4>📚 التوثيق</h4>
                     <a href="https://replicate.com/docs" target="_blank" class="link-button">
@@ -368,7 +368,7 @@ poetry run streamlit run src/sa/ui/app.py</pre>
                         ElevenLabs Docs
                     </a>
                 </div>
-                
+
                 <div class="link-card">
                     <h4>💰 التسعير</h4>
                     <a href="https://replicate.com/pricing" target="_blank" class="link-button">
@@ -382,7 +382,7 @@ poetry run streamlit run src/sa/ui/app.py</pre>
                     </a>
                 </div>
             </div>
-            
+
             <!-- Help Section -->
             <div class="section">
                 <h2>❓ تحتاج مساعدة؟</h2>
@@ -394,7 +394,7 @@ poetry run streamlit run src/sa/ui/app.py</pre>
                 </p>
             </div>
         </div>
-        
+
         <div class="footer">
             <p><strong>منصة SA للذكاء الاصطناعي</strong></p>
             <p>تحويل النصوص إلى صور وفيديوهات وصوت 🎨🎬🎤</p>

@@ -1,10 +1,10 @@
 """Database management for SA Platform"""
 
-import sqlite3
 import json
+import sqlite3
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 # Database path
 DB_PATH = Path("data/sa.db")
@@ -94,9 +94,9 @@ class Database:
         conn.commit()
         conn.close()
 
-        return project_id
+        return int(project_id) if project_id else 0
 
-    def get_projects(self) -> List[Dict[str, Any]]:
+    def get_projects(self) -> list[dict[str, Any]]:
         """Get all projects"""
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -107,7 +107,7 @@ class Database:
         conn.close()
         return projects
 
-    def get_project(self, project_id: int) -> Optional[Dict[str, Any]]:
+    def get_project(self, project_id: int) -> dict[str, Any] | None:
         """Get specific project"""
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -119,7 +119,7 @@ class Database:
         return dict(row) if row else None
 
     def update_project(
-        self, project_id: int, name: str = None, description: str = None
+        self, project_id: int, name: str | None = None, description: str | None = None
     ) -> None:
         """Update project"""
         conn = self.get_connection()
@@ -179,7 +179,7 @@ class Database:
         # Update statistics
         self._update_stats(gen_type, duration)
 
-    def get_generations(self, project_id: int) -> List[Dict[str, Any]]:
+    def get_generations(self, project_id: int) -> list[dict[str, Any]]:
         """Get project generations"""
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -194,7 +194,7 @@ class Database:
         conn.close()
         return generations
 
-    def get_statistics(self, date: str = None) -> Dict[str, Any]:
+    def get_statistics(self, date: str | None = None) -> dict[str, Any]:
         """Get statistics"""
         if not date:
             date = datetime.now().strftime("%Y-%m-%d")
@@ -218,7 +218,7 @@ class Database:
             "total_time": 0,
         }
 
-    def get_all_statistics(self) -> List[Dict[str, Any]]:
+    def get_all_statistics(self) -> list[dict[str, Any]]:
         """Get all statistics"""
         conn = self.get_connection()
         cursor = conn.cursor()

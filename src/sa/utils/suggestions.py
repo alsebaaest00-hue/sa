@@ -1,8 +1,15 @@
 """AI-powered suggestion system for content generation"""
 
 import os
+from typing import Any
 
-import openai
+try:
+    from openai import OpenAI
+
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    OpenAI = None  # type: ignore
 
 
 class SuggestionEngine:
@@ -16,8 +23,15 @@ class SuggestionEngine:
             api_key: OpenAI API key
         """
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        if self.api_key:
-            openai.api_key = self.api_key
+        self.client = None
+        self._cache: dict[str, Any] = {}
+
+        if self.api_key and OPENAI_AVAILABLE:
+            try:
+                self.client = OpenAI(api_key=self.api_key)
+            except Exception as e:
+                print(f"Failed to initialize OpenAI client: {e}")
+                self.client = None
 
     def improve_prompt(self, prompt: str, content_type: str = "image") -> str:
         """
@@ -30,8 +44,16 @@ class SuggestionEngine:
         Returns:
             Improved prompt
         """
+        # Check cache
+        cache_key = f"improve_{content_type}_{prompt[:50]}"
+        if cache_key in self._cache:
+            return self._cache[cache_key]
+
+        if not self.client:
+            return self._fallback_improve(prompt, content_type)
+
         try:
-            response = openai.chat.completions.create(
+            response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {
@@ -39,15 +61,18 @@ class SuggestionEngine:
                         "content": (
                             f"You are an expert in creating detailed prompts for "
                             f"{content_type} generation. Improve the user's prompt "
-                            f"to be more detailed and effective."
+                            f"to be more detailed and effective. Keep it concise."
                         ),
                     },
                     {"role": "user", "content": f"Improve this prompt: {prompt}"},
                 ],
                 max_tokens=200,
+                temperature=0.7,
             )
             content = response.choices[0].message.content
-            return content.strip() if content else ""
+            result = str(content.strip() if content else "")
+            self._cache[cache_key] = result
+            return result
         except Exception as e:
             print(f"Error improving prompt: {e}")
             return self._fallback_improve(prompt, content_type)
@@ -67,33 +92,54 @@ class SuggestionEngine:
 
         Args:
             prompt: Base prompt
-            count: Number of variations to generate
+            count: Number of variations to generate (max 10)
 
         Returns:
             List of prompt variations
         """
+        # Validate input
+        if not prompt or not prompt.strip():
+            return self._fallback_variations("creative scene", count)
+
+        count = min(count, 10)  # Limit to 10 variations
+
+        if not self.client:
+            return self._fallback_variations(prompt, count)
+
         try:
-            response = openai.chat.completions.create(
+            response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {
                         "role": "system",
                         "content": (
                             "Generate creative variations of the given prompt. "
-                            "Each variation should be on a new line."
+                            "Each variation should be on a new line and numbered."
                         ),
                     },
                     {
                         "role": "user",
-                        "content": f"Generate {count} variations of this prompt: {prompt}",
+                        "content": f"Generate {count} variations of: {prompt}",
                     },
                 ],
                 max_tokens=300,
+                temperature=0.8,
             )
             content = response.choices[0].message.content
             if not content:
-                return []
-            return [line.strip() for line in content.strip().split("\n") if line.strip()][:count]
+                return self._fallback_variations(prompt, count)
+
+            # Clean and parse variations
+            variations = []
+            for line in content.strip().split("\n"):
+                line = line.strip()
+                # Remove numbering (1., 2., etc.)
+                if line and line[0].isdigit():
+                    line = line.split(".", 1)[-1].strip()
+                if line:
+                    variations.append(line)
+
+            return variations[:count] if variations else self._fallback_variations(prompt, count)
         except Exception as e:
             print(f"Error generating variations: {e}")
             return self._fallback_variations(prompt, count)
@@ -121,7 +167,10 @@ class SuggestionEngine:
             List of suggested next scenes
         """
         try:
-            response = openai.chat.completions.create(
+            if not self.client:
+                return ["Continue the scene", "Fade to next location", "Close-up shot"]
+
+            response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {
@@ -162,7 +211,10 @@ class SuggestionEngine:
             Dictionary with mood, tempo, and genre suggestions
         """
         try:
-            response = openai.chat.completions.create(
+            if not self.client:
+                return {"mood": "neutral", "tempo": "medium", "genre": "ambient"}
+
+            response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {
@@ -210,7 +262,10 @@ class SuggestionEngine:
             List of scene dictionaries with text and visuals
         """
         try:
-            response = openai.chat.completions.create(
+            if not self.client:
+                return self._fallback_script(idea, num_scenes)
+
+            response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {
@@ -249,9 +304,9 @@ class SuggestionEngine:
             print(f"Error generating script: {e}")
             return self._fallback_script(idea)
 
-    def _fallback_script(self, idea: str) -> list[dict[str, str]]:
+    def _fallback_script(self, idea: str, num_scenes: int = 5) -> list[dict[str, str]]:
         """Generate basic script without API"""
-        return [
+        base_scenes = [
             {
                 "visual": f"Opening scene: {idea}",
                 "narration": f"Introduction to {idea}",
@@ -261,3 +316,39 @@ class SuggestionEngine:
             {"visual": "Resolution", "narration": "How things conclude"},
             {"visual": "Closing scene", "narration": "Final thoughts"},
         ]
+        return base_scenes[:num_scenes]
+
+    def clear_cache(self) -> None:
+        """Clear the internal cache"""
+        self._cache.clear()
+
+    def get_cache_size(self) -> int:
+        """Get the number of cached items"""
+        return len(self._cache)
+
+    def validate_prompt(self, prompt: str) -> dict[str, Any]:
+        """
+        Validate and analyze a prompt
+
+        Args:
+            prompt: Prompt to validate
+
+        Returns:
+            Dictionary with validation results
+        """
+        result = {
+            "valid": bool(prompt and prompt.strip()),
+            "length": len(prompt),
+            "word_count": len(prompt.split()),
+            "has_details": len(prompt.split()) > 5,
+            "suggestions": [],
+        }
+
+        if result["length"] < 10:
+            result["suggestions"].append("Prompt is too short. Add more details.")
+        if result["word_count"] < 3:
+            result["suggestions"].append("Use at least 3 words for better results.")
+        if result["length"] > 500:
+            result["suggestions"].append("Prompt might be too long. Consider shortening.")
+
+        return result

@@ -213,9 +213,7 @@ def example_complete_workflow():
     final_video = f"{config.output_dir}/final_story.mp4"
 
     # Create slideshow
-    video = video_gen.create_slideshow(
-        scene_images, duration_per_image=3, output_path=final_video
-    )
+    video = video_gen.create_slideshow(scene_images, duration_per_image=3, output_path=final_video)
 
     # Add audio if available
     if video and audio_path and os.path.exists(audio_path):

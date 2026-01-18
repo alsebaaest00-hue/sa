@@ -5,6 +5,8 @@ from datetime import datetime
 
 import streamlit as st
 
+from sa.ui.templates import show_templates_and_tips
+
 # Set page config
 st.set_page_config(
     page_title="SA - منصة تحويل النصوص",

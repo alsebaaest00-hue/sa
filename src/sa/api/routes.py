@@ -20,6 +20,7 @@ from sa.api.models import (
     PromptImprovementResponse,
     PromptVariationsRequest,
     PromptVariationsResponse,
+    Scene,
     ScriptGenerationRequest,
     ScriptGenerationResponse,
     VideoGenerationRequest,
@@ -335,7 +336,7 @@ async def generate_script(request: ScriptGenerationRequest):
 
         return ScriptGenerationResponse(
             idea=request.idea,
-            scenes=[{"visual": s["visual"], "narration": s["narration"]} for s in script],
+            scenes=[Scene(visual=s["visual"], narration=s["narration"]) for s in script],
         )
 
     except Exception as e:

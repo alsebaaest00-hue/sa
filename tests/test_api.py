@@ -1,13 +1,17 @@
 """Tests for the API endpoints"""
 
+import pytest
 from fastapi.testclient import TestClient
-
 from sa.api import app
 
-client = TestClient(app)
+
+@pytest.fixture(scope="module")
+def client():
+    """Create test client"""
+    return TestClient(app)
 
 
-def test_root():
+def test_root(client):
     """Test root endpoint"""
     response = client.get("/")
     assert response.status_code == 200
@@ -17,7 +21,7 @@ def test_root():
     assert "docs" in data
 
 
-def test_health_check():
+def test_health_check(client):
     """Test health check endpoint"""
     response = client.get("/api/v1/health")
     assert response.status_code == 200
@@ -30,7 +34,7 @@ def test_health_check():
     assert "ai_suggestions" in data["services"]
 
 
-def test_config_status():
+def test_config_status(client):
     """Test configuration status endpoint"""
     response = client.get("/api/v1/config/status")
     assert response.status_code == 200
@@ -40,7 +44,7 @@ def test_config_status():
     assert "assets_dir" in data
 
 
-def test_list_outputs():
+def test_list_outputs(client):
     """Test listing outputs endpoint"""
     response = client.get("/api/v1/outputs")
     assert response.status_code == 200
@@ -53,7 +57,7 @@ def test_list_outputs():
     assert isinstance(data["audio"], list)
 
 
-def test_image_generation_without_api_key():
+def test_image_generation_without_api_key(client):
     """Test image generation fails without API key"""
     response = client.post(
         "/api/v1/images/generate",
@@ -68,7 +72,7 @@ def test_image_generation_without_api_key():
     assert response.status_code in [200, 503]
 
 
-def test_audio_generation():
+def test_audio_generation(client):
     """Test audio generation endpoint"""
     response = client.post(
         "/api/v1/audio/generate",
@@ -78,31 +82,31 @@ def test_audio_generation():
     assert response.status_code in [200, 503]
 
 
-def test_get_nonexistent_image():
+def test_get_nonexistent_image(client):
     """Test getting nonexistent image"""
     response = client.get("/api/v1/images/nonexistent.png")
     assert response.status_code == 404
 
 
-def test_get_nonexistent_audio():
+def test_get_nonexistent_audio(client):
     """Test getting nonexistent audio"""
     response = client.get("/api/v1/audio/nonexistent.mp3")
     assert response.status_code == 404
 
 
-def test_get_nonexistent_video():
+def test_get_nonexistent_video(client):
     """Test getting nonexistent video"""
     response = client.get("/api/v1/videos/nonexistent.mp4")
     assert response.status_code == 404
 
 
-def test_delete_nonexistent_file():
+def test_delete_nonexistent_file(client):
     """Test deleting nonexistent file"""
     response = client.delete("/api/v1/outputs/nonexistent.txt")
     assert response.status_code == 404
 
 
-def test_improve_prompt_without_api_key():
+def test_improve_prompt_without_api_key(client):
     """Test prompt improvement without API key"""
     response = client.post(
         "/api/v1/suggestions/improve",
@@ -112,7 +116,7 @@ def test_improve_prompt_without_api_key():
     assert response.status_code in [200, 503]
 
 
-def test_generate_variations_without_api_key():
+def test_generate_variations_without_api_key(client):
     """Test generating variations without API key"""
     response = client.post(
         "/api/v1/suggestions/variations",
@@ -122,7 +126,7 @@ def test_generate_variations_without_api_key():
     assert response.status_code in [200, 503]
 
 
-def test_generate_script_without_api_key():
+def test_generate_script_without_api_key(client):
     """Test script generation without API key"""
     response = client.post(
         "/api/v1/suggestions/script",
@@ -132,7 +136,7 @@ def test_generate_script_without_api_key():
     assert response.status_code in [200, 503]
 
 
-def test_video_generation_with_invalid_images():
+def test_video_generation_with_invalid_images(client):
     """Test video generation with invalid image paths"""
     response = client.post(
         "/api/v1/videos/generate",
@@ -145,7 +149,7 @@ def test_video_generation_with_invalid_images():
     assert response.status_code in [404, 500]
 
 
-def test_api_docs_available():
+def test_api_docs_available(client):
     """Test that API documentation is available"""
     # Test OpenAPI docs
     response = client.get("/docs")
@@ -156,7 +160,7 @@ def test_api_docs_available():
     assert response.status_code == 200
 
 
-def test_invalid_image_size():
+def test_invalid_image_size(client):
     """Test image generation with invalid size"""
     response = client.post(
         "/api/v1/images/generate",
@@ -171,7 +175,7 @@ def test_invalid_image_size():
     assert response.status_code == 422
 
 
-def test_invalid_num_outputs():
+def test_invalid_num_outputs(client):
     """Test image generation with invalid num_outputs"""
     response = client.post(
         "/api/v1/images/generate",
