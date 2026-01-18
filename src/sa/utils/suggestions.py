@@ -47,7 +47,8 @@ class SuggestionEngine:
         # Check cache
         cache_key = f"improve_{content_type}_{prompt[:50]}"
         if cache_key in self._cache:
-            return self._cache[cache_key]
+            cached_result: str = self._cache[cache_key]  # type: ignore
+            return cached_result
 
         if not self.client:
             return self._fallback_improve(prompt, content_type)
@@ -336,19 +337,23 @@ class SuggestionEngine:
         Returns:
             Dictionary with validation results
         """
+        suggestions: list[str] = []
+        prompt_length = len(prompt)
+        word_count = len(prompt.split())
+
+        if prompt_length < 10:
+            suggestions.append("Prompt is too short. Add more details.")
+        if word_count < 3:
+            suggestions.append("Use at least 3 words for better results.")
+        if prompt_length > 500:
+            suggestions.append("Prompt might be too long. Consider shortening.")
+
         result = {
             "valid": bool(prompt and prompt.strip()),
-            "length": len(prompt),
-            "word_count": len(prompt.split()),
-            "has_details": len(prompt.split()) > 5,
-            "suggestions": [],
+            "length": prompt_length,
+            "word_count": word_count,
+            "has_details": word_count > 5,
+            "suggestions": suggestions,
         }
-
-        if result["length"] < 10:
-            result["suggestions"].append("Prompt is too short. Add more details.")
-        if result["word_count"] < 3:
-            result["suggestions"].append("Use at least 3 words for better results.")
-        if result["length"] > 500:
-            result["suggestions"].append("Prompt might be too long. Consider shortening.")
 
         return result

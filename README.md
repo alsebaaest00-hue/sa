@@ -86,7 +86,7 @@ validation = img_gen.validate_prompt("غروب جميل")
 if validation["valid"]:
     # توليد مع cache
     urls = [img_gen.generate("غروب جميل", use_cache=True) for _ in range(3)]
-    
+
     # تحميل دفعة واحدة
     local_paths = img_gen.batch_download(urls, "outputs/images/")
     print(f"📥 تم تحميل {len(local_paths)} صورة")

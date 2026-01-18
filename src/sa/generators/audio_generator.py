@@ -172,7 +172,8 @@ class AudioGenerator:
                 self.stats["cached"] += 1
                 if progress_callback:
                     progress_callback("Retrieved from cache")
-                return cached_path
+                cached_result: str | None = cached_path
+                return cached_result
 
         if not self.client or not ELEVENLABS_AVAILABLE:
             logger.info("ElevenLabs not available, using fallback TTS")

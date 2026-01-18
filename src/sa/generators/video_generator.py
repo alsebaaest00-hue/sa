@@ -8,7 +8,6 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-import replicate
 from moviepy.editor import (
     AudioFileClip,
     CompositeAudioClip,
@@ -26,6 +25,7 @@ try:
 
     REPLICATE_AVAILABLE = True
 except ImportError:
+    replicate = None  # type: ignore
     REPLICATE_AVAILABLE = False
     logger.warning("Replicate not available")
 
@@ -171,7 +171,8 @@ class VideoGenerator:
             self.stats["cached"] += 1
             if progress_callback:
                 progress_callback("Retrieved from cache")
-            return self._cache[cache_key]
+            cached_result: str | None = self._cache[cache_key]  # type: ignore
+            return cached_result
 
         if not REPLICATE_AVAILABLE:
             logger.error("Replicate API not available")

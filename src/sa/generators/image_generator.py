@@ -9,7 +9,6 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any
 
-import replicate
 import requests
 from PIL import Image
 
@@ -22,6 +21,7 @@ try:
 
     REPLICATE_AVAILABLE = True
 except ImportError:
+    replicate = None  # type: ignore
     REPLICATE_AVAILABLE = False
     logger.warning("Replicate not available")
 
@@ -227,7 +227,8 @@ class ImageGenerator:
             self.stats["cached"] += 1
             if progress_callback:
                 progress_callback("Retrieved from cache")
-            return self._cache[cache_key]
+            cached_result: list[str] = self._cache[cache_key]  # type: ignore
+            return cached_result
 
         if not REPLICATE_AVAILABLE:
             logger.error("Replicate API not available")
