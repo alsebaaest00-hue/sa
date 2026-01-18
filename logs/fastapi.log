@@ -1,0 +1,7 @@
+The "poetry.dev-dependencies" section is deprecated and will be removed in a future version. Use "poetry.group.dev.dependencies" instead.
+INFO:     Started server process [12644]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49118 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46380 - "GET /api/health HTTP/1.1" 200 OK

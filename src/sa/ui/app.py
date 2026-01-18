@@ -93,13 +93,14 @@ def main():
         )
 
     # Main tabs
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
         [
             "🖼️ توليد الصور",
             "🎬 توليد الفيديو",
             "🎤 توليد الصوت",
             "🎯 مشروع كامل",
             "📂 المعرض",
+            "📚 القوالس والنصائح",
         ]
     )
 
@@ -358,6 +359,10 @@ def main():
                     )
         else:
             st.info("لا توجد صوتيات بعد")
+
+    # Tab 6: Templates and Tips
+    with tab6:
+        show_templates_and_tips()
 
 
 if __name__ == "__main__":
