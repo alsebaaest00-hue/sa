@@ -22,7 +22,8 @@ class TestTemplates:
     def test_list_templates(self):
         """Test listing all templates"""
         templates = Templates.list_templates()
-        assert len(templates) == 5
+        assert len(templates) >= 5  # At least 5 templates
+        assert len(templates) == 15  # Currently 15 templates
         template_names = [t["name"] for t in templates]
         assert "🎯 قالب التسويق" in template_names
 

@@ -37,10 +37,10 @@ class TestSuggestionEngineInit:
                 assert engine.api_key == "env_key"
 
     def test_init_without_key(self):
-        """Test initialization without API key"""
+        """Test initialization without API key - falls back to None"""
         with patch("sa.utils.suggestions.os.getenv", return_value=None):
-            with pytest.raises(ValueError, match="OpenAI API key"):
-                SuggestionEngine()
+            engine = SuggestionEngine()
+            assert engine.api_key is None
 
 
 class TestPromptImprovement:
@@ -49,27 +49,28 @@ class TestPromptImprovement:
     def test_improve_prompt_image(self, mock_openai_client):
         """Test improving prompt for images"""
         engine = SuggestionEngine(api_key="test_key")
-        result = engine.improve_prompt("cat", media_type="image")
+        result = engine.improve_prompt("cat", content_type="image")
         assert isinstance(result, str)
         assert mock_openai_client.chat.completions.create.called
 
     def test_improve_prompt_video(self, mock_openai_client):
         """Test improving prompt for video"""
         engine = SuggestionEngine(api_key="test_key")
-        result = engine.improve_prompt("flying bird", media_type="video")
+        result = engine.improve_prompt("flying bird", content_type="video")
         assert isinstance(result, str)
 
     def test_improve_prompt_audio(self, mock_openai_client):
         """Test improving prompt for audio"""
         engine = SuggestionEngine(api_key="test_key")
-        result = engine.improve_prompt("welcome message", media_type="audio")
+        result = engine.improve_prompt("welcome message", content_type="audio")
         assert isinstance(result, str)
 
     def test_improve_empty_prompt(self, mock_openai_client):
         """Test improving empty prompt"""
         engine = SuggestionEngine(api_key="test_key")
-        with pytest.raises(ValueError, match="empty"):
-            engine.improve_prompt("", media_type="image")
+        # Empty prompts are now handled gracefully with fallback
+        result = engine.improve_prompt("", content_type="image")
+        assert isinstance(result, str)
 
 
 class TestPromptGeneration:
@@ -159,27 +160,33 @@ class TestErrorHandling:
         mock_openai_client.chat.completions.create.side_effect = Exception("API Error")
 
         engine = SuggestionEngine(api_key="test_key")
-        with pytest.raises(Exception):
-            engine.improve_prompt("test")
+        # Should use fallback instead of raising
+        result = engine.improve_prompt("test")
+        assert isinstance(result, str)
 
-    def test_invalid_media_type(self, mock_openai_client):
-        """Test with invalid media type"""
+    def test_invalid_content_type(self, mock_openai_client):
+        """Test with invalid content type"""
         engine = SuggestionEngine(api_key="test_key")
         # Should still work but with default behavior
-        result = engine.improve_prompt("test", media_type="invalid")
+        result = engine.improve_prompt("test", content_type="invalid")
         assert isinstance(result, str)
 
     def test_rate_limit_handling(self, mock_openai_client):
         """Test handling rate limit errors"""
-        from openai import RateLimitError
+        try:
+            from openai import RateLimitError
 
-        mock_openai_client.chat.completions.create.side_effect = RateLimitError(
-            "Rate limit", response=Mock(), body=None
-        )
+            mock_openai_client.chat.completions.create.side_effect = RateLimitError(
+                "Rate limit", response=Mock(status_code=429), body=None
+            )
+        except ImportError:
+            # If RateLimitError not available, skip
+            pytest.skip("OpenAI RateLimitError not available")
 
         engine = SuggestionEngine(api_key="test_key")
-        with pytest.raises(RateLimitError):
-            engine.improve_prompt("test")
+        # Should use fallback instead of raising
+        result = engine.improve_prompt("test")
+        assert isinstance(result, str)
 
 
 class TestBatchOperations:

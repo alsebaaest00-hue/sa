@@ -96,14 +96,14 @@ class TestCacheManager:
             # Set first value
             cache.set("expired_key", "value1")
 
-            # Wait 1 second
-            time.sleep(1)
+            # Wait 2.1 seconds for first key to expire
+            time.sleep(2.1)
 
             # Set second value (not expired)
             cache.set("valid_key", "value2")
 
-            # Wait for first to expire
-            time.sleep(2)
+            # Wait a tiny bit to ensure timestamp difference
+            time.sleep(0.1)
 
             # Clear expired
             count = cache.clear_expired()
@@ -170,6 +170,11 @@ class TestCachedDecorator:
 
     def test_cached_decorator_basic(self):
         """Test basic caching with decorator"""
+        # Clear cache before test
+        cache_dir = Path("data/cache")
+        for f in cache_dir.glob("*.json"):
+            f.unlink()
+
         call_count = 0
 
         @cached(ttl=3600)
@@ -190,6 +195,11 @@ class TestCachedDecorator:
 
     def test_cached_with_different_args(self):
         """Test that different arguments create different cache entries"""
+        # Clear cache before test
+        cache_dir = Path("data/cache")
+        for f in cache_dir.glob("*.json"):
+            f.unlink()
+
         call_count = 0
 
         @cached(ttl=3600)
@@ -213,6 +223,11 @@ class TestCachedDecorator:
 
     def test_cached_with_kwargs(self):
         """Test caching with keyword arguments"""
+        # Clear cache before test
+        cache_dir = Path("data/cache")
+        for f in cache_dir.glob("*.json"):
+            f.unlink()
+
         call_count = 0
 
         @cached(ttl=3600)
@@ -230,6 +245,11 @@ class TestCachedDecorator:
 
     def test_cached_with_key_prefix(self):
         """Test caching with key prefix"""
+        # Clear cache before test
+        cache_dir = Path("data/cache")
+        for f in cache_dir.glob("*.json"):
+            f.unlink()
+
         call_count = 0
 
         @cached(ttl=3600, key_prefix="test_prefix")
