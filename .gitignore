@@ -5,3 +5,18 @@ __pycache__/
 dist/
 build/
 *.egg-info
+
+# Coverage reports
+.coverage
+coverage.xml
+htmlcov/
+
+# Temporary outputs
+outputs/*.mp3
+outputs/*.wav
+outputs/*.mp4
+temp_narration/
+
+# Cache
+data/cache/*.json
+!data/cache/.gitkeep
