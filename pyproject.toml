@@ -17,6 +17,7 @@ python-dotenv = "^1.0"
 requests = "^2.31"
 numpy = "^1.26"
 gtts = "^2.5"
+httpx = "0.26.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^9.0"
