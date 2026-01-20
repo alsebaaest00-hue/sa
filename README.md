@@ -5,10 +5,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/alsebaaest00/sa/releases/tag/v2.0.0)
 [![Coverage](https://img.shields.io/badge/coverage-70%25-brightgreen.svg)](https://github.com/alsebaaest00/sa)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/alsebaaest00/sa)
 
 منصة قوية وذكية لتحويل النصوص إلى صور وفيديوهات مع إضافة الصوت والموسيقى باستخدام الذكاء الاصطناعي.
 
-> 🚀 **[بداية سريعة في 3 خطوات →](QUICKSTART.md)** | 📖 **[دليل الاستخدام الكامل →](USAGE.md)** | 🎉 **[ما الجديد في v2.0.0 →](RELEASE_NOTES_v2.0.0.md)**
+> 🚀 **[بداية سريعة في 3 خطوات →](QUICKSTART.md)** | 📖 **[دليل الاستخدام الكامل →](USAGE.md)** | 🎉 **[ما الجديد في v2.0.0 →](RELEASE_NOTES_v2.0.0.md)** | ☁️ **[افتح في Codespaces →](https://codespaces.new/alsebaaest00/sa)**
 
 ## ✨ المميزات
 
@@ -28,6 +29,21 @@
 - ✅ **تغطية اختبارية 70%**: جودة عالية وموثوقية
 
 ## 🚀 التثبيت السريع
+
+### البداية السريعة مع GitHub Codespaces ☁️
+
+أسرع طريقة للبدء! اضغط على الزر أدناه لفتح بيئة تطوير جاهزة في المتصفح:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=alsebaaest00/sa)
+
+**المميزات:**
+- ✅ بيئة جاهزة في دقائق
+- ✅ لا يحتاج تثبيت على جهازك
+- ✅ جميع الأدوات مثبتة مسبقاً
+- ✅ VS Code في المتصفح
+- 📖 [دليل Codespaces →](.devcontainer/README.md)
+
+### التثبيت المحلي
 
 ```bash
 # استنساخ المشروع
